@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Moja Fajna Strona</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #333;
+    }
+    img {
+      width: 300px;
+      border-radius: 15px;
+      margin: 20px 0;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Witaj na mojej stronie!</h1>
+  <img src="https://source.unsplash.com/random/300x200" alt="Losowy obrazek" />
+  <p>Kliknij przycisk, aby zmienić kolor tła:</p>
+  <button onclick="changeBackground()">Zmień tło</button>
+
+  <script>
+    function changeBackground() {
+      const colors = ["#FFD700", "#90EE90", "#FFB6C1", "#ADD8E6", "#D3D3D3"];
+      document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    }
+  </script>
+</body>
+</html>
