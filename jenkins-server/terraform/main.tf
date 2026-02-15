@@ -47,8 +47,6 @@ resource "aws_security_group" "jenkins_sg" {
   name        = "jenkins-sg"
   description = "Zezwalaj na porty SSH i Jenkins"
 
-  # Reguła wejściowa dla dostępu przez SSH z dowolnego adresu IP.
-  # UWAGA: Dla większego bezpieczeństwa zaleca się ograniczenie tego do własnego adresu IP.
   ingress {
     description = "SSH"
     from_port   = 22
@@ -75,7 +73,7 @@ resource "aws_security_group" "jenkins_sg" {
   }
 }
 
-# Tworzenie instancji EC2 dla Jenkinsa.
+# Tworzenie instancji
 resource "aws_instance" "jenkins_server" {
   # AMI dla Ubuntu Server 22.04 LTS w regionie us-east-1.
   ami           = "ami-020cba7c55df1f615"
@@ -83,8 +81,6 @@ resource "aws_instance" "jenkins_server" {
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
   key_name      = aws_key_pair.jenkins_key.key_name
 
-  # Uruchamia skrypt instalacyjny Jenkinsa po uruchomieniu instancji.
-  # Musisz utworzyć plik 'install_jenkins.sh' w tym samym folderze.
   user_data = file("install_jenkins.sh")
 
   tags = {
@@ -98,7 +94,7 @@ output "instance_public_ip" {
   description = "Publiczny adres IP serwera Jenkins."
 }
 
-# Wyświetlanie polecenia do zalogowania się na serwer przez SSH.
+# Polecenie
 output "ssh_command" {
   value       = "ssh -i ${local_file.private_key_pem.filename} ubuntu@${aws_instance.jenkins_server.public_ip}"
   description = "Polecenie do połączenia się z serwerem Jenkins przez SSH."
