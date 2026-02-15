@@ -1,6 +1,6 @@
-# main.tf - Konfiguracja Terraform dla instancji EC2 z Jenkinsem
+# main.tf - Konfiguracja 
 
-# Definicja wymaganych dostawców dla tej konfiguracji.
+# Dostawcy
 terraform {
   required_providers {
     aws = {
@@ -18,18 +18,18 @@ terraform {
   }
 }
 
-# Konfiguracja dostawcy AWS.
+# Konfiguracja dostawcy
 provider "aws" {
   region = "us-east-1"
 }
 
-# Generowanie nowego 2048-bitowego klucza prywatnego RSA.
+# Klucz
 resource "tls_private_key" "rsa_key" {
   algorithm = "RSA"
   rsa_bits  = 2048
 }
 
-# Tworzenie pary kluczy AWS przy użyciu klucza publicznego wygenerowanego przez zasób tls_private_key.
+# Tworzenie pary kluczy
 resource "aws_key_pair" "jenkins_key" {
   key_name   = "jenkins_key"
   public_key = tls_private_key.rsa_key.public_key_openssh
@@ -42,7 +42,7 @@ resource "local_file" "private_key_pem" {
   file_permission = "0400" # Ustawienie uprawnień tylko do odczytu dla właściciela.
 }
 
-# Definicja grupy bezpieczeństwa dla instancji Jenkins.
+# security groups
 resource "aws_security_group" "jenkins_sg" {
   name        = "jenkins-sg"
   description = "Zezwalaj na porty SSH i Jenkins"
@@ -55,7 +55,7 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Reguła wejściowa dla panelu internetowego Jenkins z dowolnego adresu IP.
+  # Reguła wejściowa 
   ingress {
     description = "Jenkins web panel"
     from_port   = 8080
@@ -64,7 +64,7 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Reguła wyjściowa zezwalająca na cały ruch wychodzący.
+  # Reguła wyjściowa
   egress {
     from_port   = 0
     to_port     = 0
